@@ -1,10 +1,9 @@
 import postgres from "postgres";
 import { drizzle } from "drizzle-orm/postgres-js";
 import { migrate } from "drizzle-orm/postgres-js/migrator";
+import { buildApp } from "../src/app.js";
 
-type App = Awaited<ReturnType<typeof import("../src/app.js").buildApp>>;
-
-let app: App;
+let app: Awaited<ReturnType<typeof buildApp>>;
 
 export default async function handler(req: any, res: any) {
   if (!app) {
@@ -17,7 +16,6 @@ export default async function handler(req: any, res: any) {
     }
     await client.end();
 
-    const { buildApp } = await import("../src/app.js");
     app = await buildApp();
     await app.ready();
   }
