@@ -2,7 +2,8 @@ import "dotenv/config";
 import Fastify from "fastify";
 import { buildApp } from "./build-app.js";
 
-const app = await buildApp();
+const app = Fastify({ logger: true });
+await buildApp(app);
 const PORT = parseInt(process.env.PORT || "3000", 10);
 
 try {

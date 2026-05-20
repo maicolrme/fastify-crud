@@ -1,4 +1,4 @@
-import Fastify from "fastify";
+import type { FastifyInstance } from "fastify";
 import swagger from "@fastify/swagger";
 import swaggerUi from "@fastify/swagger-ui";
 import { sql } from "drizzle-orm";
@@ -6,9 +6,7 @@ import { db } from "./db/index.js";
 import { userRoutes } from "./routes/user.routes.js";
 import { itemRoutes } from "./routes/item.routes.js";
 
-export async function buildApp() {
-  const app = Fastify({ logger: true });
-
+export async function buildApp(app: FastifyInstance) {
   await app.register(swagger, {
     openapi: {
       info: {
@@ -58,6 +56,4 @@ GET  /items/:id PUT  /items/:id  DELETE /items/:id
 
   await app.register(userRoutes);
   await app.register(itemRoutes);
-
-  return app;
 }
