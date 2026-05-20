@@ -7,7 +7,7 @@
     "build": "tsc",
     "start": "node dist/index.js",
     "start:migrate": "npx tsx src/migrate.ts && node dist/index.js",
-    "vercel-build": "npx drizzle-kit push",
+    "vercel-build": "echo 'Migrations run at runtime on cold start'",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:push": "drizzle-kit push",
@@ -17,15 +17,15 @@
     "@fastify/swagger": "^9.7.0",
     "@fastify/swagger-ui": "^5.2.6",
     "dotenv": "^16.4.7",
-    "drizzle-kit": "^0.30.4",
     "drizzle-orm": "^0.38.3",
     "fastify": "^5.2.1",
     "postgres": "^3.4.5",
-    "tsx": "^4.19.2",
     "zod": "^4.4.3"
   },
   "devDependencies": {
     "@types/node": "^22.12.0",
+    "drizzle-kit": "^0.30.4",
+    "tsx": "^4.19.2",
     "typescript": "^5.7.3"
   }
 }
