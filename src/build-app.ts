@@ -7,6 +7,8 @@ import { userRoutes } from "./routes/user.routes.js";
 import { itemRoutes } from "./routes/item.routes.js";
 
 export async function buildApp(app: FastifyInstance) {
+  const isProduction = process.env.NODE_ENV === "production";
+
   await app.register(swagger, {
     openapi: {
       info: {
@@ -18,9 +20,18 @@ export async function buildApp(app: FastifyInstance) {
     },
   });
 
-  await app.register(swaggerUi, { routePrefix: "/docs" });
+  if (!isProduction) {
+    await app.register(swaggerUi, { routePrefix: "/docs" });
+  }
+
+  app.get("/openapi.json", async (_req, reply) => {
+    return reply.send(app.swagger());
+  });
 
   app.get("/", async (_req, reply) => {
+    const docsLink = isProduction
+      ? '<li><a href="/openapi.json">OpenAPI Spec</a> — documentación (JSON)</li>'
+      : '<li><a href="/docs">Swagger UI</a> — documentación interactiva</li>';
     return reply.type("text/html").send(`
       <!DOCTYPE html>
       <html>
@@ -29,7 +40,7 @@ export async function buildApp(app: FastifyInstance) {
         <h1>Fastify + Drizzle ORM API</h1>
         <p>API REST con PostgreSQL (Supabase)</p>
         <ul>
-          <li><a href="/docs">Swagger UI</a> — documentación interactiva</li>
+          ${docsLink}
           <li><a href="/health">Health Check</a> — estado del servidor y DB</li>
         </ul>
         <h2>Endpoints</h2>
