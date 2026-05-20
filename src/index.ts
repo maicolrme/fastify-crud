@@ -1,5 +1,9 @@
 import "dotenv/config";
+import Fastify from "fastify";
 import { buildApp } from "./build-app.js";
+
+// Vercel detects Fastify via this import
+void Fastify;
 
 const app = await buildApp();
 const PORT = parseInt(process.env.PORT || "3000", 10);
